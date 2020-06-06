@@ -13,10 +13,12 @@ export class ProductController {
         const products = await this.productService.getProducts();
         return res
         .status(HttpStatus.OK)
-        .json({
-            message: `(${products.length}) product(s) found.`,
-            data: products
-        });
+        // .json({
+        //     message: `(${products.length}) product(s) found.`,
+        //     data: products
+        // });
+        .json(products);
+
     }
 
     @Get('/:productID')
@@ -43,6 +45,7 @@ export class ProductController {
             message: 'Product Successfully Created',
             data: product
         });
+        
     }
 
     @Put('/:productID')
