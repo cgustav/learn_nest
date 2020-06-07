@@ -33,4 +33,14 @@ export interface Mission {
 export interface IQuery {
     launches(): Launch[] | Promise<Launch[]>;
     launch(id: string): Launch | Promise<Launch>;
+    me(): User | Promise<User>;
+}
+
+export interface User {
+    id: string;
+    email: string;
+}
+
+export interface IMutation {
+    login(email?: string): string | Promise<string>;
 }

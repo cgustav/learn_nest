@@ -4,9 +4,7 @@ import { LaunchResolver } from './launch.resolver';
 import { MissionResolver } from './mission.resolver';
 
 @Module({
-  imports:[
-    HttpModule,
-  ],
-  providers: [LaunchService, LaunchResolver, MissionResolver]
+  imports: [HttpModule],
+  providers: [LaunchService, LaunchResolver, MissionResolver],
 })
 export class LaunchModule {}
