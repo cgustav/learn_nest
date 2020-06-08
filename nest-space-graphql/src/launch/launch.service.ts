@@ -1,5 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { SpaceXLaunch, LaunchModel } from './launch.model';
+import { forkJoin, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 /**
  * Para aplicar transformación de
@@ -55,7 +57,7 @@ export class LaunchService {
    */
   getAllLaunches(): Observable<LaunchModel[]> {
     return this.http
-      .get(`${this.apiURL}/launches`)
+      .get<SpaceXLaunch[]>(`${this.apiURL}/launches`)
       .pipe(map(({ data }) => data.map(this.toLaunch)));
   }
 
@@ -68,7 +70,15 @@ export class LaunchService {
    */
   getLaunchById(launchID: number): Observable<LaunchModel> {
     return this.http
-      .get(`${this.apiURL}/launches/${launchID}`)
-      .pipe(map(({ data }) => data.map(this.toLaunch)));
+      .get<SpaceXLaunch>(`${this.apiURL}/launches/${launchID}`)
+      .pipe(map(({ data }) => this.toLaunch(data)));
+  }
+
+  getLaunchByIds(ids: number[]) {
+    return ids.length
+      ? forkJoin(ids.map(id => this.getLaunchById(id))).pipe(
+          mergeMap(res => of(res)),
+        )
+      : of([]);
   }
 }

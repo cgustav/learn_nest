@@ -22,7 +22,7 @@ Para autenticar con usuario registrado:
 
 ```GraphQL
 {
-  me{
+  me {
   id
   email
 }

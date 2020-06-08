@@ -39,8 +39,17 @@ export interface IQuery {
 export interface User {
     id: string;
     email: string;
+    trips?: Launch[];
 }
 
 export interface IMutation {
     login(email?: string): string | Promise<string>;
+    bookTrips(launchIds: string[]): TripUpdateResponse | Promise<TripUpdateResponse>;
+    cancelTrip(launchId: string): TripUpdateResponse | Promise<TripUpdateResponse>;
+}
+
+export interface TripUpdateResponse {
+    success: boolean;
+    message?: string;
+    launches?: Launch[];
 }

@@ -10,6 +10,9 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "allowSyntheticDefaultImports": true
   },
   "exclude": ["node_modules", "dist"]
