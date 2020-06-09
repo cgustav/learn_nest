@@ -1,0 +1,17 @@
+#MacOS
+.DS_Store
+
+#Prevent from accidental stuff
+node_modules/
+*.env
+*.key
+*.jwt
+*.secret
+*.environment
+*.pem
+*.jks
+
+#VS Code
+.vscode
+
+
