@@ -4,7 +4,6 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-
 ## Conduit (Medium clone) Api Overview
 
 NestJS API Application that follows Medium.com (clone) API specs and guidelines:
@@ -20,11 +19,11 @@ This includes good practices and a "real world production build style and perspe
 
 Clone the repo:
 
-`git clone git@github.com:cgustav/learn_nest/nest-conduit-api.git`
+`git clone git@github.com:cgustav/learn_nest.git`
 
 Switch to the repo folder:
 
-`cd nest-conduit-api.git`
+`cd learn_nest/nest-conduit-api`
 
 Install dependencies:
 
@@ -34,15 +33,15 @@ Copy required environment variable settings:
 
 `cp src/config.example .env`
 
-Create local database docs directory:
+Create local database sync files folder:
 
 `mkdir pgdata`
 
-Compose database docker images:
+Compose docker from database images & start service :
 
 `sudo docker-compose up -d`
 
-Start service (development mode):
+Run App (development mode):
 
 `npm run start:dev`
 
@@ -57,4 +56,6 @@ This applications uses JSON Web Token (JWT) to handle authentication. The token 
 ## Resources
 
 - [Example code](https://github.com/kelvin-mai/nestjs-blog/)
-
+- [Example tutorial video series](https://www.youtube.com/watch?v=AZfa-AFwjgo)
+- [Docker](https://www.docker.com/)
+- [PostgreSQL](https://www.postgresql.org/)
