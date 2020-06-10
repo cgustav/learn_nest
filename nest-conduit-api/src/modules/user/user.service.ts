@@ -18,4 +18,33 @@ export class UserService {
     await this.userRepo.update({ username }, data);
     return await this.findByUsername(username);
   }
+
+  async followUser(
+    currentUser: UserEntity,
+    username: string,
+  ): Promise<UserEntity> {
+    const user = await this.userRepo.findOne({
+      where: { username },
+      relations: ['followers'],
+    });
+
+    user.followers.push(currentUser);
+    await user.save();
+    return user.toProfile(currentUser);
+  }
+
+  async unfollowUser(
+    currentUser: UserEntity,
+    username: string,
+  ): Promise<UserEntity> {
+    const user = await this.userRepo.findOne({
+      where: { username },
+      relations: ['followers'],
+    });
+
+    // user.followers.push(currentUser);
+    user.followers.filter(follower => follower !== currentUser);
+    await user.save();
+    return user;
+  }
 }
