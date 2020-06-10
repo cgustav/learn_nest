@@ -5,7 +5,7 @@ import {
   ConflictException,
   NotFoundException,
 } from '@nestjs/common';
-import { RegisterDTO, LoginDTO } from 'src/models/user.model';
+import { RegisterDTO, LoginDTO, SearchDTO } from 'src/models/user.model';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -38,7 +38,8 @@ export class AuthService {
 
   async login({ email, password }: LoginDTO) {
     try {
-      const user = await this.userRepo.findOne({ where: { email } });
+      // const user = await this.userRepo.findOne({ where: { email } });
+      const user = await this.whoAmI({ email });
       if (!user) throw new UnauthorizedException('Invalid credentials');
 
       const isValid = await user.comparePassword(password);
@@ -52,6 +53,11 @@ export class AuthService {
       //   else throw new InternalServerErrorException();
       else throw error;
     }
+  }
+
+  async whoAmI({ email, username }: SearchDTO): Promise<UserEntity> {
+    const criteria = email ? { email } : { username };
+    return await this.userRepo.findOne({ where: criteria });
   }
 
   private payloadWithJwt(user: UserEntity) {

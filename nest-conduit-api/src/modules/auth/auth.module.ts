@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '../../entities/user.entity';
 //ORM dependencies
 import { TypeOrmModule } from '@nestjs/typeorm';
 
@@ -19,12 +19,11 @@ import { JwtStrategy } from './jwt.strategy';
         expiresIn: 3600,
       },
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
+    // PassportModule.register({ defaultStrategy: 'myjwt' }),
+    PassportModule,
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
   exports: [PassportModule, JwtStrategy],
 })
-export class AuthModule {
-  weas() {}
-}
+export class AuthModule {}
