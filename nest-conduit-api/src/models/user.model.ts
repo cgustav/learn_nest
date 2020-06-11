@@ -4,6 +4,7 @@ import {
   MinLength,
   MaxLength,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 
 export class LoginDTO {
@@ -47,6 +48,9 @@ export class SearchDTO {
   @MinLength(4)
   @MaxLength(20)
   username?: string;
+
+  @IsBoolean()
+  withToken?: boolean;
 }
 
 export interface AuthPayload {

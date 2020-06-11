@@ -14,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'myjwt') {
     private authService: AuthService /*@InjectRepository(UserEntity) private userRepo: Repository<UserEntity>,*/,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Token'),
       ignoreExpiration: true,
       secretOrKey: process.env.SECRET,
     });
@@ -31,7 +31,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'myjwt') {
     // else return user;
 
     const { username } = payload;
-    const user = this.authService.whoAmI({ username });
+    const user = this.authService.findCurrentUser(username);
     if (!user) throw new UnauthorizedException();
     else return user;
 

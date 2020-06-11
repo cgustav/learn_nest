@@ -5,6 +5,8 @@ import { ProfilesController } from './profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { PassportModule } from '@nestjs/passport';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from '../auth/auth.service';
 
 @Module({
   imports: [
@@ -12,9 +14,12 @@ import { PassportModule } from '@nestjs/passport';
     PassportModule.register({
       defaultStrategy: 'myjwt',
     }),
+    JwtModule.register({
+      secret: process.env.SECRET,
+    }),
   ],
   controllers: [UserController, ProfilesController],
-  providers: [UserService],
+  providers: [UserService, AuthService],
   exports: [UserService],
 })
 export class UserModule {}

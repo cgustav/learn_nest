@@ -57,7 +57,8 @@ export class UserEntity extends AbstractEntity {
   }
 
   toProfile(user: UserEntity) {
-    const following = this.followers.includes(user);
+    let following = null;
+    if (user) following = this.followers.includes(user);
     const profile: any = this.toJSON();
     delete profile.followers;
     return { ...profile, following };

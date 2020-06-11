@@ -13,16 +13,18 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post()
-  //   @UsePipes(ValidationPipe)
   async register(
-    @Body(ValidationPipe) credentials: RegisterDTO,
+    @Body(ValidationPipe) credentials: { user: RegisterDTO },
   ): Promise<Object> {
-    return this.authService.register(credentials);
+    const user = await this.authService.register(credentials.user);
+    return this.authService.signUserWithJWT(user);
   }
 
   @Post('/login')
-  //   @UsePipes(ValidationPipe)
-  async login(@Body(ValidationPipe) credentials: LoginDTO): Promise<Object> {
-    return this.authService.login(credentials);
+  async login(
+    @Body(ValidationPipe) credentials: { user: LoginDTO },
+  ): Promise<Object> {
+    const user = await this.authService.login(credentials.user);
+    return this.authService.signUserWithJWT(user);
   }
 }
