@@ -19,7 +19,6 @@ import { JwtStrategy } from './jwt.strategy';
         expiresIn: 3600,
       },
     }),
-    // PassportModule.register({ defaultStrategy: 'myjwt' }),
     PassportModule,
   ],
   providers: [AuthService, JwtStrategy],

@@ -45,9 +45,32 @@ Run App (development mode):
 
 `npm run start:dev`
 
-## Database
+## API Specs
 
-soon...
+[Read API Specs](e2e/README.md)
+
+## E2E Tests
+
+Run E2E Test and ensure the API accomplish with all the API Specs:
+
+### Run in bash
+
+Execute `npm run test:e2e` command to run automated test on Linux environments. You can also add the customed script located on `/e2e/run-api-test.sh` (which runs a `newman` service in the background) into your CI/CD process.
+
+### Run in Postman
+
+Import `Conduit.postman_collection.json` from your [Postman] client and click "Run" automated tests.
+
+**Note1:** You have to setup the following variables on your project configuration to get ready with the automated testing (right click on "Conduit" folder in your postman client, then choose "Edit" option and go to "Variables tab"):
+
+```bash
+APIURL=http://localhost:4000/api \
+USERNAME=testuser \
+EMAIL=user@test.com \
+PASSWORD=password2
+```
+
+**Note2:** To improve the testing process you can set the `dropSchema: false,` property to `true,` in the `/src/database-connection.service.ts` configuration file. **DO NOT do this on production environments!**.
 
 ## Authentication
 
