@@ -9,6 +9,7 @@ import {
   FindAllArticlesQuery,
   FindFeedArticlesQuery,
 } from 'src/models/article.models';
+import { TagEntity } from 'src/entities/tag.entity';
 
 @Injectable()
 export class ArticleService {
@@ -17,6 +18,8 @@ export class ArticleService {
     private articleRepo: Repository<ArticleEntity>,
     @InjectRepository(UserEntity)
     private userRepo: Repository<UserEntity>,
+    @InjectRepository(TagEntity)
+    private tagRepo: Repository<TagEntity>,
   ) {}
 
   async findAll(query: FindAllArticlesQuery): Promise<ArticleEntity[]> {
@@ -80,6 +83,7 @@ export class ArticleService {
   ): Promise<ArticleEntity> {
     const article = await this.articleRepo.create(data);
     article.author = user;
+    await this.upsertTags(data.tagList);
     const { slug } = await article.save();
     // return article;
     return await this.articleRepo.findOne({ slug });
@@ -129,5 +133,15 @@ export class ArticleService {
 
   private ensureOwnership(user: UserEntity, article: ArticleEntity): boolean {
     return article.author.id === user.id;
+  }
+
+  private async upsertTags(tags: string[]) {
+    const foundTags = await this.tagRepo.find({
+      where: tags.map(t => ({ tag: t })),
+    });
+    const newTags = tags.filter(t => !foundTags.map(t => t.tag).includes(t));
+    await Promise.all(
+      this.tagRepo.create(newTags.map(t => ({ tag: t }))).map(n => n.save()),
+    );
   }
 }
