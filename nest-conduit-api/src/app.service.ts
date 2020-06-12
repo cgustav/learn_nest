@@ -12,7 +12,8 @@ export class AppService {
     return 'Hello World!';
   }
 
-  async findTags(): Promise<TagEntity[]> {
-    return await this.tagRepo.find();
+  async findTags(): Promise<string[]> {
+    const tags = await this.tagRepo.find();
+    return tags.map(tag => tag.tag);
   }
 }

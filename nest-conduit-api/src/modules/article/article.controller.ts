@@ -19,10 +19,12 @@ import {
   UpdateArticleDTO,
   FindAllArticlesQuery,
   FindFeedArticlesQuery,
+  ArticleResponse,
 } from 'src/models/article.models';
 import { OptionalAuthGuard } from '../auth/optional-auth.guard';
 import { CommentsService } from './comments.service';
-import { CreateCommentDTO } from 'src/models/comment.models';
+import { CreateCommentDTO, CommentResponse } from 'src/models/comment.models';
+import { ResponseObject } from 'src/models/response.models';
 
 @Controller('articles')
 export class ArticleController {
@@ -36,10 +38,10 @@ export class ArticleController {
   async findAll(
     @User() authenticated: UserEntity,
     @Query() query: FindAllArticlesQuery,
-  ) {
-    // console.log('findAll Query: ', query);
-    console.log('authenticated object: ', authenticated);
-
+  ): Promise<
+    ResponseObject<'articles', ArticleResponse[]> &
+      ResponseObject<'articlesCount', number>
+  > {
     const articles = await this.articleService.findAll(query);
     return {
       articles: articles.map(article => article.toArticle(authenticated)),
@@ -47,12 +49,15 @@ export class ArticleController {
     };
   }
 
-  @Get('feed')
+  @Get('/feed')
   @UseGuards(LocalAuthGuard)
   async findFeed(
     @User() authenticated: UserEntity,
     @Query() query: FindFeedArticlesQuery,
-  ) {
+  ): Promise<
+    ResponseObject<'articles', ArticleResponse[]> &
+      ResponseObject<'articlesCount', number>
+  > {
     const articles = await this.articleService.findFeed(authenticated, query);
     return {
       articles: articles.map(article => article.toArticle(authenticated)),
@@ -65,7 +70,7 @@ export class ArticleController {
   async findBySlug(
     @Param('slug') slug: string,
     @User() authenticated: UserEntity,
-  ): Promise<any> {
+  ): Promise<ResponseObject<'article', ArticleResponse>> {
     const article = await this.articleService.findArticleBySlug(slug);
     console.log('Article found: ', article);
     return { article: article.toArticle(authenticated) };
@@ -75,13 +80,12 @@ export class ArticleController {
   @UseGuards(LocalAuthGuard)
   async createArticle(
     @User() authenticated: UserEntity,
-    @Body(ValidationPipe) data: { article: CreateArticleDTO },
-  ): Promise<any> {
+    @Body('article', ValidationPipe) data: CreateArticleDTO,
+  ): Promise<ResponseObject<'article', ArticleResponse>> {
     const article = await this.articleService.createArticle(
       authenticated,
-      data.article,
+      data,
     );
-
     return { article: article.toArticle(authenticated) };
   }
 
@@ -90,14 +94,13 @@ export class ArticleController {
   async updateArticle(
     @Param('slug') slug: string,
     @User() authenticated: UserEntity,
-    @Body(ValidationPipe) data: { article: UpdateArticleDTO },
-  ): Promise<any> {
+    @Body('article', ValidationPipe) data: UpdateArticleDTO,
+  ): Promise<ResponseObject<'article', ArticleResponse>> {
     const article = await this.articleService.updateArticle(
       slug,
       authenticated,
-      data.article,
+      data,
     );
-
     return { article: article.toArticle(authenticated) };
   }
 
@@ -106,13 +109,12 @@ export class ArticleController {
   async deleteArticle(
     @Param('slug') slug: string,
     @User() authenticated: UserEntity,
-  ): Promise<any> {
+  ): Promise<ResponseObject<'article', ArticleResponse>> {
     const article = await this.articleService.deleteArticle(
       slug,
       authenticated,
     );
-
-    return { article };
+    return { article: article.toArticle(authenticated) };
   }
 
   @Post('/:slug/favorite')
@@ -120,7 +122,7 @@ export class ArticleController {
   async favoriteArticle(
     @Param('slug') slug: string,
     @User() authenticated: UserEntity,
-  ) {
+  ): Promise<ResponseObject<'article', ArticleResponse>> {
     console.log('CURRENT SLUG: ', slug);
     const article = (
       await this.articleService.userFavoriteArticle(slug, authenticated)
@@ -133,9 +135,7 @@ export class ArticleController {
   async unfavoriteArticle(
     @Param('slug') slug: string,
     @User() authenticated: UserEntity,
-  ) {
-    console.log('CURRENT SLUG: ', slug);
-
+  ): Promise<ResponseObject<'article', ArticleResponse>> {
     const article = (
       await this.articleService.userUnfavoriteArticle(slug, authenticated)
     ).toArticle(authenticated);
@@ -145,10 +145,8 @@ export class ArticleController {
   @Get('/:slug/comments')
   @UseGuards(OptionalAuthGuard)
   async getCommentFromArticle(
-    @User() authenticated: UserEntity,
     @Param('slug') slug: string,
-  ) {
-    console.log('Comment slug: ', slug);
+  ): Promise<ResponseObject<'comments', CommentResponse[]>> {
     const comments = await this.commentService.findByArticleSlug(slug);
     return { comments };
   }
@@ -157,16 +155,14 @@ export class ArticleController {
   @UseGuards(LocalAuthGuard)
   async addCommentToArticle(
     @User() authenticated: UserEntity,
-    @Body(ValidationPipe) data: { comment: CreateCommentDTO },
+    @Body('comment', ValidationPipe) data: CreateCommentDTO,
     @Param('slug') slug: string,
-  ) {
-    console.log('[CREATE COMMENT]COMMENT DATA: ', data.comment);
+  ): Promise<ResponseObject<'comment', CommentResponse>> {
     const comment = await this.commentService.createComment(
       authenticated,
       slug,
-      data.comment,
+      data,
     );
-
     return { comment };
   }
 
@@ -176,13 +172,12 @@ export class ArticleController {
     @User() authenticated: UserEntity,
     @Param('slug') slug: string,
     @Param('id') id: number,
-  ) {
+  ): Promise<ResponseObject<'comment', CommentResponse>> {
     const comment = await this.commentService.deleteComment(
       authenticated,
       slug,
       id,
     );
-
     return { comment };
   }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
+import { ProfileResponse } from 'src/models/user.models';
 
 @Injectable()
 export class UserService {
@@ -13,12 +14,10 @@ export class UserService {
     username: String,
     userData?: UserEntity,
   ): Promise<UserEntity> {
-    return await await (
-      await this.userRepo.findOne({
-        where: { username },
-        relations: ['followers'],
-      })
-    ).toProfile(userData);
+    return await this.userRepo.findOne({
+      where: { username },
+      relations: ['followers'],
+    });
   }
 
   async followUser(
@@ -32,7 +31,7 @@ export class UserService {
 
     user.followers.push(currentUser);
     await user.save();
-    return user.toProfile(currentUser);
+    return user;
   }
 
   async unfollowUser(
@@ -47,6 +46,6 @@ export class UserService {
     // user.followers.push(currentUser);
     user.followers.filter(follower => follower !== currentUser);
     await user.save();
-    return user.toProfile(currentUser);
+    return user;
   }
 }

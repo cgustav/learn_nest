@@ -10,11 +10,13 @@ import {
   LoginDTO,
   SearchDTO,
   UpdateDTO,
+  AuthResponse,
 } from 'src/models/user.models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { ResponseObject } from 'src/models/response.models';
 
 @Injectable()
 export class AuthService {
@@ -87,7 +89,7 @@ export class AuthService {
    * a sus propiedades.
    * @param user
    */
-  signUserWithJWT(user: UserEntity): Object {
+  signUserWithJWT(user: UserEntity): ResponseObject<'user', AuthResponse> {
     const payload = { username: user.username };
     const token = this.jwtService.sign(payload);
     return {

@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsBoolean,
 } from 'class-validator';
+import { UserEntity } from 'src/entities/user.entity';
 
 export class LoginDTO {
   @IsEmail()
@@ -55,4 +56,19 @@ export class SearchDTO {
 
 export interface AuthPayload {
   username: string;
+}
+
+export interface UserResponse {
+  email: string;
+  username?: string;
+  bio: string;
+  image: string | null;
+}
+
+export interface AuthResponse extends Partial<UserEntity> {
+  token: string;
+}
+
+export interface ProfileResponse extends UserResponse {
+  following: boolean | null;
 }

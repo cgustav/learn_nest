@@ -6,7 +6,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterDTO, LoginDTO } from 'src/models/user.models';
+import { RegisterDTO, LoginDTO, AuthResponse } from 'src/models/user.models';
+import { ResponseObject } from 'src/models/response.models';
 
 @Controller('users')
 export class AuthController {
@@ -14,17 +15,17 @@ export class AuthController {
 
   @Post()
   async register(
-    @Body(ValidationPipe) credentials: { user: RegisterDTO },
-  ): Promise<Object> {
-    const user = await this.authService.register(credentials.user);
+    @Body('user', ValidationPipe) credentials: RegisterDTO,
+  ): Promise<ResponseObject<'user', AuthResponse>> {
+    const user = await this.authService.register(credentials);
     return this.authService.signUserWithJWT(user);
   }
 
   @Post('/login')
   async login(
-    @Body(ValidationPipe) credentials: { user: LoginDTO },
-  ): Promise<Object> {
-    const user = await this.authService.login(credentials.user);
+    @Body('user', ValidationPipe) credentials: LoginDTO,
+  ): Promise<ResponseObject<'user', AuthResponse>> {
+    const user = await this.authService.login(credentials);
     return this.authService.signUserWithJWT(user);
   }
 }

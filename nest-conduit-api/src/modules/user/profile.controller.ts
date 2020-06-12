@@ -13,6 +13,8 @@ import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { UserEntity } from 'src/entities/user.entity';
 import { User } from 'src/decorators/user.decorator';
 import { AuthService } from '../auth/auth.service';
+import { ResponseObject } from 'src/models/response.models';
+import { ProfileResponse, UserResponse } from 'src/models/user.models';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -23,13 +25,13 @@ export class ProfilesController {
   async findUserProfile(
     @User() authenticated: UserEntity,
     @Param('username') username: string,
-  ): Promise<any> {
+  ): Promise<ResponseObject<'profile', ProfileResponse>> {
     const profile = await this.userService.findUserProfileByUsername(
       username,
       authenticated,
     );
     if (!profile) throw new NotFoundException();
-    else return { profile };
+    else return { profile: profile.toProfile(authenticated) };
   }
 
   @Post('/:username/follow')
@@ -38,9 +40,9 @@ export class ProfilesController {
   async followUser(
     @User() authenticated: UserEntity,
     @Param('username') username: string,
-  ): Promise<any> {
+  ): Promise<ResponseObject<'profile', ProfileResponse>> {
     const profile = await this.userService.followUser(authenticated, username);
-    return { profile };
+    return { profile: profile.toProfile(authenticated) };
   }
 
   @Delete('/:username/follow')
@@ -48,11 +50,11 @@ export class ProfilesController {
   async unfollowUser(
     @User() authenticated: UserEntity,
     @Param('username') username: string,
-  ): Promise<any> {
+  ): Promise<ResponseObject<'profile', ProfileResponse>> {
     const profile = await this.userService.unfollowUser(
       authenticated,
       username,
     );
-    return { profile };
+    return { profile: profile.toProfile(authenticated) };
   }
 }
