@@ -12,16 +12,23 @@ import { UserService } from './user.service';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { UserEntity } from 'src/entities/user.entity';
 import { User } from 'src/decorators/user.decorator';
-import { AuthService } from '../auth/auth.service';
 import { ResponseObject } from 'src/models/response.models';
-import { ProfileResponse, UserResponse } from 'src/models/user.models';
+import { ProfileResponse } from 'src/models/user.models';
+
+import {
+  ApiOkResponse,
+  ApiUnauthorizedResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { OptionalAuthGuard } from '../auth/optional-auth.guard';
 
 @Controller('profiles')
 export class ProfilesController {
   constructor(private userService: UserService) {}
 
   @Get('/:username')
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(OptionalAuthGuard)
+  @ApiOkResponse({ description: 'Find user profile' })
   async findUserProfile(
     @User() authenticated: UserEntity,
     @Param('username') username: string,
@@ -37,6 +44,9 @@ export class ProfilesController {
   @Post('/:username/follow')
   @UseGuards(LocalAuthGuard)
   @HttpCode(200)
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Follow user' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async followUser(
     @User() authenticated: UserEntity,
     @Param('username') username: string,
@@ -47,6 +57,9 @@ export class ProfilesController {
 
   @Delete('/:username/follow')
   @UseGuards(LocalAuthGuard)
+  @ApiBearerAuth()
+  @ApiOkResponse({ description: 'Follow user' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   async unfollowUser(
     @User() authenticated: UserEntity,
     @Param('username') username: string,
