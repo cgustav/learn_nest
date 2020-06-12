@@ -10,7 +10,7 @@ import {
   LoginDTO,
   SearchDTO,
   UpdateDTO,
-} from 'src/models/user.model';
+} from 'src/models/user.models';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';

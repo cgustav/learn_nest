@@ -9,7 +9,7 @@ import {
 import { UserEntity } from 'src/entities/user.entity';
 import { User } from 'src/decorators/user.decorator';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
-import { UpdateDTO } from 'src/models/user.model';
+import { UpdateDTO } from 'src/models/user.models';
 import { AuthService } from '../auth/auth.service';
 
 @Controller('user')
