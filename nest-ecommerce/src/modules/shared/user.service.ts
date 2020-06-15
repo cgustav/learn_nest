@@ -13,7 +13,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
-  async findByLogin(data: LoginDTO): Promise<Object> {
+  async findByLogin(data: LoginDTO): Promise<any> {
     const { username, password } = data;
     const document = await this.userModel.findOne({ username });
     if (!document || !(await bcrypt.compare(password, document.password)))
@@ -21,7 +21,12 @@ export class UserService {
     else return this.sanitizedUser(document);
   }
 
-  async create(data: RegisterDTO): Promise<Object> {
+  async findByPayload(payload) {
+    const { username } = payload;
+    return await this.userModel.findOne({ username });
+  }
+
+  async create(data: RegisterDTO): Promise<any> {
     const { username } = data;
     const coincidence = await this.userModel.findOne({ username });
     if (coincidence) throw new BadRequestException('User already exists');

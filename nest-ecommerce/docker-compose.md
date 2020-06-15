@@ -55,3 +55,4 @@ Login to your container by using container names.
 - [Dedicated Blog Post](https://zgadzaj.com/development/docker/docker-compose/containers/mongodb)
 - [Mongo Conf File](https://docs.mongodb.com/manual/reference/configuration-options/#file-format)
 - [StackOverflow Post](https://stackoverflow.com/questions/42912755/how-to-create-a-db-for-mongodb-container-on-start-up)
+- [Docker Compose Guide](https://gabrieltanner.org/blog/docker-compose)
