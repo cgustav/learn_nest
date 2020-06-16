@@ -13,6 +13,10 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(@InjectModel('User') private userModel: Model<User>) {}
 
+  async findAll(): Promise<User[]> {
+    return await this.userModel.find();
+  }
+
   async findByLogin(data: LoginDTO): Promise<any> {
     const { username, password } = data;
     const document = await this.userModel.findOne({ username });
@@ -30,9 +34,6 @@ export class UserService {
     const { username } = data;
     const coincidence = await this.userModel.findOne({ username });
     if (coincidence) throw new BadRequestException('User already exists');
-
-    console.log('DOCUMENTX: ', data);
-
     const createdUser = new this.userModel(data);
     await createdUser.save();
     return this.sanitizedUser(createdUser);
