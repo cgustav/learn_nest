@@ -1,8 +1,7 @@
-import 'dotenv/config';
 import * as request from 'supertest';
 import { app } from './constants';
 import { RegisterDTO, LoginDTO } from '../src/models/user.dto';
-import { HttpStatus, RequestTimeoutException } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 
 describe('AUTH', () => {
   const seller: RegisterDTO = {
