@@ -34,6 +34,14 @@ Run App (development mode):
 
 ## API Environment
 
+In development mode run:
+
+`npm run start:dev`
+
+In e2e (testing) mode run:
+
+`npm run test:e2e`
+
 WIP
 
 ## Project Learning Goal

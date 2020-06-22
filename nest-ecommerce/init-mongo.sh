@@ -9,16 +9,20 @@ mongo -- "$MONGO_INITDB_DATABASE" <<EOF
 
     admin.auth(rootUser, rootPassword);
 
-    //creating service user
     const serviceUser = '$MONGO_SERVICE_USERNAME';
     const servicePass = '$MONGO_SERVICE_PASSWORD';
-    const serviceDB = '$MONGO_SERVICE_DATABASE'
-    db.createUser({user: serviceUser, pwd: servicePass, roles: [{role: "readWrite",db: serviceDB}]});
+    const serviceDB = '$MONGO_SERVICE_DATABASE';
+    db.createUser({user: serviceUser, pwd: servicePass, roles: [{role: "readWrite", db: serviceDB}]});
+    
+    exit
+EOF
 
-    //creating testing user
+mongo -u "$MONGO_INITDB_ROOT_USERNAME" -p "$MONGO_INITDB_ROOT_PASSWORD"<<EOF
+    const testDB = '$MONGO_TEST_DATABASE';
     const testUser = '$MONGO_TEST_USERNAME';
     const testPass = '$MONGO_TEST_PASSWORD';
-    const testDB = '$MONGO_TEST_DATABASE'
-    db.createUser({user: testUser, pwd: testPass, roles: [{role: "readWrite",db: testDB}]})
 
+    db = db.getSiblingDB(testDB);
+
+    db.createUser({user: testUser, pwd: testPass, roles: [{role: "readWrite", db: testDB}]});
 EOF

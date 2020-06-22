@@ -24,7 +24,12 @@ export abstract class ConnBuilder {
       port: process.env.DB_PORT_RANGE_START,
     });
   }
-  static create({ username, password, port, db }: ConnectionString): string {
+  private static create({
+    username,
+    password,
+    port,
+    db,
+  }: ConnectionString): string {
     return `mongodb://${username}:${password}@localhost:${port}/${db}`;
   }
 }
