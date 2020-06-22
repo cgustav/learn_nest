@@ -23,14 +23,6 @@ export class AuthController {
     private authService: AuthService,
   ) {}
 
-  //TODO: This route is for development only. Remove it later
-  @Get()
-  @UseGuards(LocalAuthGuard, SellerGuard)
-  async findAll(@User() authenticated: any) {
-    console.log('authenticated: ', authenticated);
-    return await this.userService.findAll();
-  }
-
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() userDTO: LoginDTO) {

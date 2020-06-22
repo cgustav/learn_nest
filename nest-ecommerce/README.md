@@ -52,4 +52,9 @@ WIP
 - Explore Deployment/DevOPs
 - React/Redux fontend in TypeScript
 - React Hooks
+- Nest Interceptors
 - SSR with NextJS
+
+## Resources
+
+- [NestJS Interceptors](https://docs.nestjs.com/interceptors)
