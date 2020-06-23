@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-export const ProductSchema = new Schema({
+export const OrderSchema = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User',

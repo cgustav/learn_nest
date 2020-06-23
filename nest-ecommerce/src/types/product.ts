@@ -2,10 +2,10 @@ import { Document } from 'mongoose';
 import { User } from './user';
 
 export interface Product extends Document {
-  owner: User;
+  owner: User | string;
   title: string;
   image: string;
   description: string;
   price: number;
-  created: Date;
+  created?: Date;
 }

@@ -1,7 +1,13 @@
 import * as request from 'supertest';
-import { app } from './constants';
+import { app, database } from './constants';
 import { RegisterDTO, LoginDTO } from '../src/models/user.dto';
 import { HttpStatus } from '@nestjs/common';
+import * as mongoose from 'mongoose';
+
+beforeAll(async () => {
+  await mongoose.connect(database);
+  await mongoose.connection.db.dropDatabase();
+});
 
 describe('AUTH', () => {
   const seller: RegisterDTO = {

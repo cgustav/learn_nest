@@ -12,7 +12,6 @@ export class SellerGuard implements CanActivate {
   canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log('SELLER GUARD USER: ', user);
     if (user.seller) return true;
 
     throw new UnauthorizedException('Unauthorized access');

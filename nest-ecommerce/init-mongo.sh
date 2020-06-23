@@ -24,5 +24,5 @@ mongo -u "$MONGO_INITDB_ROOT_USERNAME" -p "$MONGO_INITDB_ROOT_PASSWORD"<<EOF
 
     db = db.getSiblingDB(testDB);
 
-    db.createUser({user: testUser, pwd: testPass, roles: [{role: "readWrite", db: testDB}]});
+    db.createUser({user: testUser, pwd: testPass, roles: [{role: "dbAdmin", db: testDB}, {role: "readWrite", db: testDB}]});
 EOF

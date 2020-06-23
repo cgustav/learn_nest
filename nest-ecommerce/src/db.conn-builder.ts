@@ -24,6 +24,9 @@ export abstract class ConnBuilder {
       port: process.env.DB_PORT_RANGE_START,
     });
   }
+
+  //static getAdminCon(db): string {}
+
   private static create({
     username,
     password,
