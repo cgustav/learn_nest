@@ -28,7 +28,7 @@ beforeAll(async done => {
   await mongoose.disconnect(done);
 });
 
-describe('PRODUCT', () => {
+describe('PRODUCTS', () => {
   let productId: string;
   const product: CreateProductDTO = {
     title: 'new phone',
@@ -38,7 +38,6 @@ describe('PRODUCT', () => {
   };
 
   it('Should list all existing products', () => {
-    console.log(`API URI: ${app}/products`);
     return request(app)
       .get('/products')
       .set('Accept', 'application/json')
@@ -76,6 +75,7 @@ describe('PRODUCT', () => {
       .get(`/products/${productId}`)
       .set('Accept', 'application/json')
       .expect(({ body }) => {
+        expect(body._id).toBeDefined();
         expect(body.title).toEqual(product.title);
         expect(body.description).toEqual(product.description);
         expect(body.price).toEqual(product.price);
@@ -91,6 +91,7 @@ describe('PRODUCT', () => {
       .set('Accept', 'application/json')
       .send({ title: 'newTitle' })
       .expect(({ body }) => {
+        expect(body._id).toBeDefined();
         expect(body.title).toEqual('newTitle');
         expect(body.description).toEqual(product.description);
         expect(body.price).toEqual(product.price);
@@ -105,6 +106,7 @@ describe('PRODUCT', () => {
       .set('Authorization', `Bearer ${sellerToken}`)
       .set('Accept', 'application/json')
       .expect(({ body }) => {
+        expect(body._id).toBeDefined();
         expect(body.title).toEqual('newTitle');
         expect(body.description).toEqual(product.description);
         expect(body.price).toEqual(product.price);

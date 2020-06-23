@@ -6,7 +6,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, isValidObjectId, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { Product } from '../../types/product';
 import { CreateProductDTO, UpdateProductDTO } from './product.dto';
 import { User } from '../../types/user';
