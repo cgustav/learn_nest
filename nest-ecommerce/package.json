@@ -10,6 +10,7 @@
     "node": ">=8.0.0"
   },
   "scripts": {
+    "deploy": "glcloud app deploy --quiet",
     "build": "rm -rf dist && nest build",
     "gcp-build": "npm run build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
