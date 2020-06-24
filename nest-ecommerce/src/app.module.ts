@@ -8,15 +8,17 @@ import { ConnBuilder } from './db.conn-builder';
 import { ProductModule } from './modules/product/product.module';
 import { OrderModule } from './modules/order/order.module';
 
-const connString: string =
-  process.env.NODE_ENV === 'test'
-    ? ConnBuilder.getTestDB()
-    : ConnBuilder.getProductionDB();
-
-console.log('Connection String: ', connString);
+const conString: string = ConnBuilder.getConnectionString();
+console.log('Connection String: ', conString);
 
 @Module({
-  imports: [MongooseModule.forRoot(connString), SharedModule, AuthModule, ProductModule, OrderModule],
+  imports: [
+    MongooseModule.forRoot(conString),
+    SharedModule,
+    AuthModule,
+    ProductModule,
+    OrderModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

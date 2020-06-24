@@ -41,3 +41,9 @@ lerna-debug.log*
 
 /*.volume
 /.docker
+
+# GCLOUD CONFIG
+
+.DS_Store
+app.yaml
+
