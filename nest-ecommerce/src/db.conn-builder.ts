@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 interface AtlasConnectionString {
   username: string;
   password: string;
@@ -16,9 +14,10 @@ interface ConnectionString {
 
 export abstract class ConnBuilder {
   static getConnectionString(): string {
-    if (process.env.NODE_ENV === 'test') return this.getTestDB();
-    else if (process.env.NODE_ENV === 'dev') return this.getDevelopmentDB();
-    else return this.getProductionDB();
+    // if (process.env.NODE_ENV === 'test') return this.getTestDB();
+    // else if (process.env.NODE_ENV === 'dev') return this.getDevelopmentDB();
+    // else return this.getProductionDB();
+    return this.getTestDB();
   }
 
   protected static getProductionDB(): string {
